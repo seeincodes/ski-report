@@ -132,9 +132,10 @@
   }
 
   .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 20px; /* Adjust gap if needed */
+    margin-bottom: 60px;
+    max-width: 100%; /* Adjust max width */
     text-align: center;
   }
 
