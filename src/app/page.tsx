@@ -41,31 +41,27 @@ export default function Home() {
   }
 
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <div className={styles.container}>
-          <div className={styles.textCenter}>
-            <h1>Ikon Pass Ski Resorts in Colorado</h1>
-          </div>
-          <div className={styles.grid}>
-            {resorts.map((resort) => (
-              <div key={resort.name} className={styles.card}>
-                <div className={styles.cardHeader}>
-                  {resort.name}
-                  <SnowflakeIcon />
-                </div>
-                <div className={styles.cardContent}>
-                  <p>Temperature: {resort.temp}</p>
-                  <p>Snowfall: {resort.snowfall}</p>
-                  <Link target='_blank' href={resort.website} passHref>
-                    Visit Site
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.textCenter}>
+        <h1>Ikon Pass Ski Resorts in Colorado</h1>
       </div>
-    </main>
+      <div className={styles.grid}>
+        {resorts.map((resort) => (
+          <div key={resort.name} className={styles.card}>
+            <div className={styles.cardHeader}>
+              {resort.name}
+              <SnowflakeIcon />
+            </div>
+            <div className={styles.cardContent}>
+              <p>Temperature: {resort.temp}</p>
+              <p>Snowfall: {resort.snowfall}</p>
+              <Link target='_blank' href={resort.website} passHref>
+                Visit Site
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
