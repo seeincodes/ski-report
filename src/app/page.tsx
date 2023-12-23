@@ -42,8 +42,12 @@ export default function Home() {
 
   async function getWeather() {
     for (let resort of resorts) {
+      // const response = await fetch(
+      //   `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+      // );
+
       const response = await fetch(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API}`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
       );
       const data = await response.json();
       // Update the temperature and snowfall in the resort object
