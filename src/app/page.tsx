@@ -14,7 +14,7 @@ export default function Home() {
       snowfall: "",
       lat: 39.8868,
       long: -105.7625,
-      website: "https://www.winterparkresort.com/",
+      website: "https://www.winterparkresort.com/the-mountain/mountain-report",
     },
     {
       name: "Copper Mountain",
@@ -22,7 +22,8 @@ export default function Home() {
       snowfall: "",
       lat: 39.502,
       long: -106.1511,
-      website: "https://www.coppercolorado.com/",
+      website:
+        "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report",
     },
     {
       name: "Steamboat Springs",
@@ -30,7 +31,7 @@ export default function Home() {
       snowfall: "",
       lat: 40.485,
       long: -106.8317,
-      website: "https://www.steamboat.com/",
+      website: "https://www.steamboat.com/the-mountain/mountain-report",
     },
     {
       name: "Arapahoe Basin",
@@ -38,7 +39,7 @@ export default function Home() {
       snowfall: "",
       lat: 39.6426,
       long: -105.8719,
-      website: "https://www.arapahoebasin.com/",
+      website: "https://www.arapahoebasin.com/snow-report/#snowReport",
     },
   ]);
 
@@ -73,6 +74,7 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.textCenter}>
         <h1>Ikon Pass Ski Resorts in Colorado</h1>
+        <h2>Daily snowfall</h2>
       </div>
       <div className={styles.grid}>
         {resorts.map((resort) => (
@@ -83,7 +85,7 @@ export default function Home() {
             </div>
             <div className={styles.cardContent}>
               <p>Temp: {resort.temp}</p>
-              <p>Snow: {resort.snowfall}</p>
+              <p>Snowfall: {resort.snowfall}</p>
               <Link target='_blank' href={resort.website} passHref>
                 Visit Site
               </Link>
