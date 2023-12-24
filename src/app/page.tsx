@@ -5,6 +5,8 @@ import { SnowflakeIcon } from "./types";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isWeatherLoaded, setIsWeatherLoaded] = useState(false);
+
   const [resorts, setResorts] = useState([
     {
       name: "Winter Park",
@@ -41,25 +43,27 @@ export default function Home() {
   ]);
 
   async function getWeather() {
-    for (let resort of resorts) {
-      // const response = await fetch(
-      //   `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      // );
+    if (isWeatherLoaded) return;
 
+    for (let resort of resorts) {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&exclude=hourly,daily,minutely&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
       );
+      // const response = await fetch(
+      //   `https://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+      // );
       const data = await response.json();
       // Update the temperature and snowfall in the resort object
       console.log("Weather Data", data);
     }
+
     // Update the state with the new resorts data
     setResorts([...resorts]);
+    setIsWeatherLoaded(true);
   }
 
   useEffect(() => {
-    const weather = getWeather();
-    console.log(weather);
+    getWeather();
   }, []);
 
   return (
