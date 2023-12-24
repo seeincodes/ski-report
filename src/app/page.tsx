@@ -56,7 +56,7 @@ export default function Home() {
       const data = await response.json();
       // Update the temperature and snowfall in the resort object
       console.log("Weather Data", data);
-      resort.temp = data.current.temp + "°F";
+      resort.temp = data.current.temp + " °F";
       resort.snowfall = data.daily[0].snow + " in";
     }
 
@@ -73,23 +73,23 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <div className={styles.textCenter}>
-        <h1>Ikon Pass Ski Resorts in Colorado</h1>
-        <h2>Daily snowfall</h2>
+        <h1>Snow Report</h1>
+        <h2>Daily snowfall at Ikon pass resorts in Colorado</h2>
       </div>
       <div className={styles.grid}>
         {resorts.map((resort) => (
           <div key={resort.name} className={styles.card}>
-            <div className={styles.cardHeader}>
-              {resort.name}
-              <SnowflakeIcon />
-            </div>
-            <div className={styles.cardContent}>
-              <p>Temp: {resort.temp}</p>
-              <p>Snowfall: {resort.snowfall}</p>
-              <Link target='_blank' href={resort.website} passHref>
-                Visit Site
-              </Link>
-            </div>
+            <Link target='_blank' href={resort.website} passHref>
+              <div className={styles.cardHeader}>
+                {resort.name}
+                <SnowflakeIcon />
+              </div>
+              <div className={styles.cardContent}>
+                <p>Temp: {resort.temp}</p>
+                <p>Snowfall: {resort.snowfall}</p>
+                <p>Visit their site</p>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
