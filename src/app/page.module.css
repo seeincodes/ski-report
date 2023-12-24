@@ -38,6 +38,7 @@
 }
 
 .grid {
+  text-align: center;
   display: grid;
   grid-template-columns: repeat(4, minmax(25%, auto));
   max-width: 100%;
