@@ -41,6 +41,14 @@ export default function Home() {
       long: -105.8719,
       website: "https://www.arapahoebasin.com/snow-report/#snowReport",
     },
+    {
+      name: "Eldora",
+      temp: "",
+      snowfall: "",
+      lat: 39.937529,
+      long: -105.582795,
+      website: "https://www.arapahoebasin.com/snow-report/#snowReport",
+    },
   ]);
 
   async function getWeather() {
