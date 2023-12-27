@@ -1,0 +1,11 @@
+.header {
+  background-color: white;
+  color: black;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.font {
+  color: black;
+  font-family: "Qitella", sans-serif;
+}
