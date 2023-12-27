@@ -5,8 +5,6 @@ import { SnowflakeIcon } from "../types";
 import { useEffect, useState } from "react";
 
 export default function IkonWeatherComponent() {
-  const [isWeatherLoaded, setIsWeatherLoaded] = useState(false);
-
   const [resorts, setResorts] = useState([
     {
       name: "Winter Park",
@@ -52,26 +50,25 @@ export default function IkonWeatherComponent() {
   ]);
 
   async function getWeather() {
-    if (isWeatherLoaded) return;
-
     for (let resort of resorts) {
       const response = await fetch(
         `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&exclude=hourly,minutely&units=imperial&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
       );
-      // const response = await fetch(
-      //   `https://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.long}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      // );
+
       const data = await response.json();
-      // Update the temperature and snowfall in the resort object
-      console.log("Weather Data", data);
+      //   console.log("Weather Data", data);
+
       resort.temp = data.current.temp + " °F";
-      resort.snowfall = data.daily[0].snow + " in";
+      if (data.daily[0].snow == undefined) {
+        resort.snowfall = "0 in";
+      } else {
+        resort.snowfall = data.daily[0].snow + " in";
+      }
     }
 
     // Update the state with the new resorts data
     setResorts([...resorts]);
-    console.log("Resorts", resorts);
-    setIsWeatherLoaded(true);
+    // console.log("Resorts", resorts);
   }
 
   useEffect(() => {
@@ -81,14 +78,16 @@ export default function IkonWeatherComponent() {
   return (
     <div className={styles.container}>
       <div className={styles.textCenter}>
-        <h2>Daily snowfall at Ikon pass resorts in Colorado</h2>
+        <h2 className={styles.header}>
+          Daily snowfall at Ikon pass resorts in Colorado
+        </h2>
       </div>
       <div className={styles.grid}>
         {resorts.map((resort) => (
           <div key={resort.name} className={styles.card}>
             <Link target='_blank' href={resort.website} passHref>
               <div className={styles.cardHeader}>
-                {resort.name}
+                <h5>{resort.name}</h5>
                 <SnowflakeIcon />
               </div>
               <div className={styles.cardContent}>
