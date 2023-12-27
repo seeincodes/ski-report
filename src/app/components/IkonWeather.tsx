@@ -87,8 +87,10 @@ export default function IkonWeatherComponent() {
           <div key={resort.name} className={styles.card}>
             <Link target='_blank' href={resort.website} passHref>
               <div className={styles.cardHeader}>
-                <h5>{resort.name}</h5>
-                <SnowflakeIcon />
+                <h4>
+                  {resort.name}
+                  <SnowflakeIcon />
+                </h4>
               </div>
               <div className={styles.cardContent}>
                 <p>Temp: {resort.temp}</p>
