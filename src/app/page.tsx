@@ -47,7 +47,7 @@ export default function Home() {
       snowfall: "",
       lat: 39.937529,
       long: -105.582795,
-      website: "https://www.arapahoebasin.com/snow-report/#snowReport",
+      website: "https://www.eldora.com/",
     },
   ]);
 
