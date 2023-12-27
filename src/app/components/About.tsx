@@ -17,14 +17,14 @@ export default function AboutComponent() {
         <section className={styles.contentSection}>
           <h2>My Journey</h2>
           <p>
-            Hi, I'm Xian! I created this site out of my love for snowboarding
+            Hi, I am Xian! I created this site out of my love for snowboarding
             and the great outdoors. Despite the fact that I fall a lot while
-            snowboarding, it's the thrill and joy of the sport that keeps me
+            snowboarding, it is the thrill and joy of the sport that keeps me
             going back to the mountains. This site is a reflection of my passion
             and adventures.
           </p>
           <p>
-            Whether you're a seasoned snowboarder or just starting out, I hope
+            Whether you are a seasoned snowboarder or just starting out, I hope
             this site provides you with valuable insights and a shared
             appreciation for the beauty of winter sports and nature.
           </p>
