@@ -56,7 +56,7 @@ export default function IkonWeatherComponent() {
       );
 
       const data = await response.json();
-      //   console.log("Weather Data", data);
+      console.log("Weather Data", data);
 
       resort.temp = data.current.temp + " °F";
       if (data.daily[0].snow == undefined) {
