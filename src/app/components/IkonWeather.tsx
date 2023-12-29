@@ -3,6 +3,16 @@ import Link from "next/link";
 import styles from "./ikon.module.css";
 import { SnowflakeIcon } from "../types";
 import { useEffect, useState } from "react";
+import { supabase } from "../utlis/supabase";
+
+type Resort = {
+  name: string;
+  temp: string;
+  snowfall: string;
+  lat: string;
+  long: string;
+  website: string;
+};
 
 export default function IkonWeatherComponent() {
   const [resorts, setResorts] = useState([
@@ -50,25 +60,75 @@ export default function IkonWeatherComponent() {
   ]);
 
   async function getWeather() {
-    for (let resort of resorts) {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&exclude=hourly,minutely&units=imperial&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      );
+    const nowInMountainTime = new Date().toLocaleString("en-US", {
+      timeZone: "America/Denver",
+    });
+    const dateInMountainTime = new Date(nowInMountainTime);
+    const year = dateInMountainTime.getFullYear();
+    const month = String(dateInMountainTime.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(dateInMountainTime.getDate()).padStart(2, "0");
+    const today = `${year}-${month}-${day}`;
 
-      const data = await response.json();
-      //   console.log("Weather Data", data);
+    // Check if data for today already exists
+    let { data: existingData, error } = await supabase
+      .from("snow")
+      .select("*")
+      .eq("date", today);
 
-      resort.temp = data.current.temp + " °F";
-      if (data.daily[0].snow == undefined) {
-        resort.snowfall = "0 in";
-      } else {
-        resort.snowfall = data.daily[0].snow + " in";
-      }
+    if (error) {
+      console.error("Error fetching data:", error);
+      return;
     }
 
-    // Update the state with the new resorts data
-    setResorts([...resorts]);
-    // console.log("Resorts", resorts);
+    if (existingData && existingData.length > 0) {
+      // Use existing data
+      const updatedResorts = resorts.map((resort) => {
+        const resortDataFromDb = existingData?.find(
+          (r) => r.name === resort.name
+        );
+        return {
+          ...resort,
+          temp: resortDataFromDb?.temp || "N/A",
+          snowfall: resortDataFromDb?.snowfall || "N/A",
+        };
+      });
+
+      console.log("Updated resorts:", updatedResorts);
+      setResorts([...updatedResorts]);
+    } else {
+      // Fetch new data and insert into database
+      for (const resort of resorts) {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&exclude=hourly,minutely&units=imperial&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+        );
+        const data = await response.json();
+        console.log("Weather Data: ", data);
+
+        // Format the data as needed
+        const newData = {
+          name: resort.name,
+          temp: `${data.current.temp} °F`,
+          snowfall: data.daily[0].snow ? `${data.daily[0].snow} in` : "0 in",
+          date: today,
+        };
+
+        // Insert data into Supabase
+        const { data: snow, error } = await supabase
+          .from("snow")
+          .insert([newData]);
+        if (error) {
+          console.error("Error inserting data:", error);
+        }
+
+        resort.temp = data.current.temp + " °F";
+        if (data.daily[0].snow == undefined) {
+          resort.snowfall = "0 in";
+        } else {
+          resort.snowfall = data.daily[0].snow + " in";
+        }
+      }
+      setResorts([...resorts]);
+    }
   }
 
   useEffect(() => {
