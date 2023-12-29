@@ -51,7 +51,14 @@ export default function IkonWeatherComponent() {
   ]);
 
   async function getWeather() {
-    const today = new Date().toISOString().split("T")[0];
+    const nowInMountainTime = new Date().toLocaleString("en-US", {
+      timeZone: "America/Denver",
+    });
+    const dateInMountainTime = new Date(nowInMountainTime);
+    const year = dateInMountainTime.getFullYear();
+    const month = String(dateInMountainTime.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(dateInMountainTime.getDate()).padStart(2, "0");
+    const today = `${year}-${month}-${day}`;
 
     // Check if data for today already exists
     let { data: existingData, error } = await supabase
