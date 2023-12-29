@@ -93,7 +93,7 @@ export default function IkonWeatherComponent() {
         };
       });
 
-      console.log("Updated resorts:", updatedResorts);
+      //   console.log("Updated resorts:", updatedResorts);
       setResorts([...updatedResorts]);
     } else {
       // Fetch new data and insert into database
@@ -102,7 +102,7 @@ export default function IkonWeatherComponent() {
           `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&exclude=hourly,minutely&units=imperial&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
         );
         const data = await response.json();
-        console.log("Weather Data: ", data);
+        // console.log("Weather Data: ", data);
 
         // Format the data as needed
         const newData = {
@@ -117,7 +117,7 @@ export default function IkonWeatherComponent() {
           .from("snow")
           .insert([newData]);
         if (error) {
-          console.error("Error inserting data:", error);
+          //   console.error("Error inserting data:", error);
         }
 
         resort.temp = data.current.temp + " °F";
