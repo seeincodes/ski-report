@@ -14,6 +14,5 @@ page = requests.get(URL)
 html_content = page.content
 soup = BeautifulSoup(html_content, 'html.parser')
 
-for row in soup.find_all('li'):
-    data = row.get_text()
-    print(data)
+data= soup .find_all(class_="acol dst-details")
+print(data)
