@@ -5,7 +5,7 @@ import IkonWeatherComponent from "./components/IkonWeatherComponent";
 export default function Home() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <IkonWeatherComponent />
     </div>
   );
