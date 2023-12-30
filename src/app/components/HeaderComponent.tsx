@@ -8,7 +8,7 @@ function Header() {
       <nav>
         <Link href='/'>Home</Link> {""}
         {/* <Link href='/about'>About</Link>{" "} */}
-        <a href='mailto:seeinplays@gmail.com?subject=Juniper%Inquiry'>
+        <a href='mailto:seeinplays@gmail.com?subject=Juniper%20Inquiry'>
           Contact
         </a>
       </nav>
