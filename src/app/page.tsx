@@ -1,6 +1,6 @@
 "use client";
-import Header from "./components/Header";
-import IkonWeatherComponent from "./components/IkonWeather";
+import Header from "./components/HeaderComponent";
+import IkonWeatherComponent from "./components/IkonWeatherComponent";
 
 export default function Home() {
   return (

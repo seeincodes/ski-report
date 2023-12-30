@@ -5,11 +5,13 @@ function Header() {
   return (
     <header className={styles.header}>
       <h1 className={styles.font}>Juniper Snow Report</h1>
-      {/* <nav>
+      <nav>
         <Link href='/'>Home</Link> {""}
-        <Link href='/about'>About</Link>{" "}
-        <a href='mailto:seeinplays@gmail.com'>Contact</a>
-      </nav> */}
+        {/* <Link href='/about'>About</Link>{" "} */}
+        <a href='mailto:seeinplays@gmail.com?subject=Juniper%Inquiry'>
+          Contact
+        </a>
+      </nav>
     </header>
   );
 }
