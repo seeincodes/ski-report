@@ -59,14 +59,14 @@ export default function IkonWeatherComponent() {
     },
   ]);
 
-  async function fetchWeatherData(resort) {
+  async function fetchWeatherData(resort: any) {
     const response = await fetch(
       `https://api.openweathermap.org/data/3.0/onecall?lat=${resort.lat}&lon=${resort.long}&exclude=hourly,minutely&units=imperial&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
     );
     return await response.json();
   }
 
-  async function fetchDataFromSupabase(date) {
+  async function fetchDataFromSupabase(date: string) {
     let { data, error } = await supabase
       .from("snow")
       .select("*")
@@ -75,10 +75,10 @@ export default function IkonWeatherComponent() {
     return data;
   }
 
-  async function processAndUpdateResorts(resorts, existingData) {
-    const updatedResorts = resorts.map((resort) => {
+  async function processAndUpdateResorts(resorts: any, existingData: any) {
+    const updatedResorts = resorts.map((resort: any) => {
       const resortDataFromDb = existingData?.find(
-        (r) => r.name === resort.name
+        (r: any) => r.name === resort.name
       );
       return {
         ...resort,
@@ -86,20 +86,41 @@ export default function IkonWeatherComponent() {
         snowfall: resortDataFromDb?.snowfall || "N/A",
       };
     });
-    setResorts(updatedResorts);
+    setResorts([...updatedResorts]);
   }
 
   async function getWeather() {
-    // Code to set 'today' variable...
+    const nowInMountainTime = new Date().toLocaleString("en-US", {
+      timeZone: "America/Denver",
+    });
+    const dateInMountainTime = new Date(nowInMountainTime);
+    const year = dateInMountainTime.getFullYear();
+    const month = String(dateInMountainTime.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(dateInMountainTime.getDate()).padStart(2, "0");
+    const today = `${year}-${month}-${day}`;
+
     try {
       const existingData = await fetchDataFromSupabase(today);
+
       if (existingData && existingData.length > 0) {
         await processAndUpdateResorts(resorts, existingData);
       } else {
         for (const resort of resorts) {
           const weatherData = await fetchWeatherData(resort);
-          // Process and insert new data into Supabase
-          // ...
+          const newData = {
+            name: resort.name,
+            temp: `${weatherData.current.temp} °F`,
+            snowfall: weatherData.daily[0].snow
+              ? `${weatherData.daily[0].snow} in`
+              : "0 in",
+            date: today,
+          };
+          const { data: snow, error } = await supabase
+            .from("snow")
+            .insert([newData]);
+          if (error) {
+            //   console.error("Error inserting data:", error);
+          }
         }
         setResorts([...resorts]);
       }
