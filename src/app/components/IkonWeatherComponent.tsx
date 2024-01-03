@@ -9,6 +9,7 @@ type Resort = {
   name: string;
   temp: string;
   snowfall: string;
+  base: string;
   lat: string;
   long: string;
   website: string;
