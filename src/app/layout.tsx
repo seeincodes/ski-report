@@ -18,11 +18,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <script
-        async
-        src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7407628109466644'
-        crossOrigin='anonymous'
-      ></script>
+      <head>
+        <script
+          async
+          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7407628109466644'
+          crossOrigin='anonymous'
+        ></script>
+      </head>
       <body suppressHydrationWarning={true} className={inter.className}>
         {children}
         <Analytics />
