@@ -9,56 +9,27 @@ type Resort = {
   name: string;
   temp: string;
   snowfall: string;
-  base: string;
+  baseDepth: string;
+  trails: string;
   lat: string;
   long: string;
   website: string;
+  state: string;
+  pass: string;
 };
 
 export default function IkonWeatherComponent() {
-  const [resorts, setResorts] = useState([
-    {
-      name: "Winter Park",
-      temp: "",
-      snowfall: "",
-      lat: 39.8868,
-      long: -105.7625,
-      website: "https://www.winterparkresort.com/the-mountain/mountain-report",
-    },
-    {
-      name: "Copper Mountain",
-      temp: "",
-      snowfall: "",
-      lat: 39.502,
-      long: -106.1511,
-      website:
-        "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report",
-    },
-    {
-      name: "Steamboat Springs",
-      temp: "",
-      snowfall: "",
-      lat: 40.485,
-      long: -106.8317,
-      website: "https://www.steamboat.com/the-mountain/mountain-report",
-    },
-    {
-      name: "Arapahoe Basin",
-      temp: "",
-      snowfall: "",
-      lat: 39.6426,
-      long: -105.8719,
-      website: "https://www.arapahoebasin.com/snow-report/#snowReport",
-    },
-    {
-      name: "Eldora",
-      temp: "",
-      snowfall: "",
-      lat: 39.937529,
-      long: -105.582795,
-      website: "https://www.eldora.com/",
-    },
-  ]);
+  const [resorts, setResorts] = useState<Resort[]>([]);
+  const [selectedState, setSelectedState] = useState("");
+
+  async function fetchResorts() {
+    let { data: resortsData, error } = await supabase
+      .from("resorts")
+      .select("*");
+    if (error) throw error;
+    // console.log("Resorts from fetch", resortsData);
+    updateResorts(resortsData);
+  }
 
   async function fetchWeatherData(resort: any) {
     const response = await fetch(
@@ -76,7 +47,7 @@ export default function IkonWeatherComponent() {
     return data;
   }
 
-  async function processAndUpdateResorts(resorts: any, existingData: any) {
+  async function updateReport(resorts: any, existingData: any) {
     const updatedResorts = resorts.map((resort: any) => {
       const resortDataFromDb = existingData?.find(
         (r: any) => r.name === resort.name
@@ -88,6 +59,23 @@ export default function IkonWeatherComponent() {
       };
     });
     setResorts([...updatedResorts]);
+  }
+
+  async function updateResorts(resorts: any) {
+    const updatedResorts = resorts.map((resort: any) => {
+      return {
+        ...resorts,
+        name: resort?.name || "N/A",
+        state: resort?.state || "N/A",
+        website: resort?.website || "N/A",
+        lat: resort?.lat || "N/A",
+        long: resort?.long || "N/A",
+        pass: resort?.pass || "N/A",
+      };
+    });
+    console.log("Resorts before from update in database", resorts);
+    setResorts([...updatedResorts]);
+    console.log("Resorts from update in database", resorts);
   }
 
   async function getWeather() {
@@ -102,9 +90,10 @@ export default function IkonWeatherComponent() {
 
     try {
       const existingData = await fetchDataFromSupabase(today);
+      const resortsFromDB = await fetchResorts();
 
       if (existingData && existingData.length > 0) {
-        await processAndUpdateResorts(resorts, existingData);
+        await updateReport(resorts, existingData);
       } else {
         for (const resort of resorts) {
           const weatherData = await fetchWeatherData(resort);
@@ -137,28 +126,39 @@ export default function IkonWeatherComponent() {
   return (
     <div className={styles.container}>
       <div className={styles.textCenter}>
-        <h2 className={styles.header}>
-          Daily snowfall at Ikon pass resorts in Colorado
-        </h2>
+        <p className={styles.header}>Daily snowfall at Ikon pass resorts</p>
       </div>
+      <select
+        value={selectedState}
+        onChange={(e) => setSelectedState(e.target.value)}
+      >
+        <option value=''>Select a State</option>
+        <option value='Colorado'>Colorado</option>
+        <option value='Vermont'>Vermont</option>
+      </select>
+
       <div className={styles.grid}>
-        {resorts.map((resort) => (
-          <div key={resort.name} className={styles.card}>
-            <Link target='_blank' href={resort.website} passHref>
-              <div className={styles.cardHeader}>
-                <h4>
-                  {resort.name}
-                  <SnowflakeIcon />
-                </h4>
-              </div>
-              <div className={styles.cardContent}>
-                <p>Temp: {resort.temp}</p>
-                <p>Snowfall: {resort.snowfall}</p>
-                <p>Visit their site</p>
-              </div>
-            </Link>
-          </div>
-        ))}
+        {resorts
+          // .filter(
+          //   (resort) => resort.state === selectedState || selectedState === ""
+          // )
+          .map((resort) => (
+            <div key={resort.name} className={styles.card}>
+              <Link target='_blank' href={resort.website} passHref>
+                <div className={styles.cardHeader}>
+                  <h4>
+                    {resort.name}
+                    <SnowflakeIcon />
+                  </h4>
+                </div>
+                <div className={styles.cardContent}>
+                  <p>Temp: {resort.temp}</p>
+                  <p>Snowfall: {resort.snowfall}</p>
+                  <p>Visit their site</p>
+                </div>
+              </Link>
+            </div>
+          ))}
       </div>
     </div>
   );
