@@ -17,6 +17,7 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(20%, auto));
   max-width: 100%;
+  min-height: 300px;
   width: var(--max-width);
   padding: 10px;
 }
