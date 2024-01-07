@@ -24,6 +24,7 @@ export default function IkonWeatherComponent() {
       lat: 39.8868,
       long: -105.7625,
       website: "https://www.winterparkresort.com/the-mountain/mountain-report",
+      state: "Colorado",
     },
     {
       name: "Copper Mountain",
@@ -33,6 +34,7 @@ export default function IkonWeatherComponent() {
       long: -106.1511,
       website:
         "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report",
+      state: "Colorado",
     },
     {
       name: "Steamboat Springs",
@@ -41,6 +43,7 @@ export default function IkonWeatherComponent() {
       lat: 40.485,
       long: -106.8317,
       website: "https://www.steamboat.com/the-mountain/mountain-report",
+      state: "Colorado",
     },
     {
       name: "Arapahoe Basin",
@@ -49,6 +52,7 @@ export default function IkonWeatherComponent() {
       lat: 39.6426,
       long: -105.8719,
       website: "https://www.arapahoebasin.com/snow-report/#snowReport",
+      state: "Colorado",
     },
     {
       name: "Eldora",
@@ -57,6 +61,43 @@ export default function IkonWeatherComponent() {
       lat: 39.937529,
       long: -105.582795,
       website: "https://www.eldora.com/",
+      state: "Colorado",
+    },
+    {
+      name: "Sugarbush",
+      temp: "",
+      snowfall: "",
+      lat: 44.1356,
+      long: -72.9039,
+      website: "https://www.sugarbush.com/mountain/conditions",
+      state: "Vermont",
+    },
+    {
+      name: "Killington",
+      temp: "",
+      snowfall: "",
+      lat: 43.616928,
+      long: -72.794663,
+      website: "https://www.killington.com/",
+      state: "Vermont",
+    },
+    {
+      name: "Pico Mountain",
+      temp: "",
+      snowfall: "",
+      lat: 43.6632,
+      long: -72.843536,
+      website: "https://www.picomountain.com/",
+      state: "Vermont",
+    },
+    {
+      name: "Stratton",
+      temp: "",
+      snowfall: "",
+      lat: 43.114167,
+      long: -72.906667,
+      website: "https://www.stratton.com/the-mountain/mountain-report",
+      state: "Vermont",
     },
   ]);
 
@@ -137,9 +178,9 @@ export default function IkonWeatherComponent() {
   return (
     <div className={styles.container}>
       <div className={styles.textCenter}>
-        <h2 className={styles.header}>
-          Daily snowfall at Ikon pass resorts in Colorado
-        </h2>
+        <p className={styles.header}>
+          Daily snowfall at Ikon pass resorts in Colorado & Vermont
+        </p>
       </div>
       <div className={styles.grid}>
         {resorts.map((resort) => (
@@ -147,8 +188,8 @@ export default function IkonWeatherComponent() {
             <Link target='_blank' href={resort.website} passHref>
               <div className={styles.cardHeader}>
                 <h4>
-                  {resort.name}
-                  <SnowflakeIcon />
+                  {resort.name} | {resort.state}
+                  {/* <SnowflakeIcon /> */}
                 </h4>
               </div>
               <div className={styles.cardContent}>
